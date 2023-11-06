@@ -1,0 +1,78 @@
+{% extends "main/header.html" %}
+    {% block content%}
+    {% load static %}
+
+    <!--CTA-->
+    <div class="cta-banner">
+      <div class="container py-5">
+        <div class="row">
+          <div class="col-sm-12 col-md-12 col-lg-6 pb-4">
+            <h1 class="display-4 font-weight-bold">Fasion Your Way</h1>
+            <h5>Fashion is not something that exists in dresses only. Fashion is in the sky, in the street. Fashion has to do with ideas, the way we live, what is happening</h5>
+            <a class="btn btn-primary mt-2" href="/products">FIND YOUR SET</a>
+        </div>
+        </div>
+      </div>
+    </div>
+
+
+<!--Products-->
+<div class="container py-3">
+	<h2>Products</h2>
+	<hr>
+	<br>
+	 <div class="row">
+      {% for p in product %}
+        <div class="col-sm-12 col-md-6 col-lg-3 pb-4">
+            <div class="card h-100" style="border:none">
+            <img src="{{ p.product_image.url }}" class="card-img-top" alt="{{ p.product_name }}" style="width: auto; height: 250px; object-fit: scale-down;">
+            <div class="card-body">
+              <h5 class="card-title">{{ p.product_name }}</h5>
+                <p class="card-text text-muted" style="font-size:12px">{{ p.product_type }}</p>
+                <p class="card-text">{{ p.product_description }}</p>
+                <div class="row">
+                <div class="col-6">
+                    {% if user.is_authenticated %}
+                      <form method="post">
+                    {% csrf_token %}
+                      <input type="hidden" value="{{p.pk}}" name="product_pk">
+                      <button type="submit" class="btn btn-outline-danger" style="font-size:18px; border-radius: 50%">★</button>
+                      </form>
+                    {% else %}
+                    <a href="/register" class="btn btn-outline-danger" style="font-size:18px; border-radius: 50%">★</a>
+                    {% endif %}
+                </div>
+                <div class="col-6">
+                    <a href="{{ p.affiliate_url }}" class="btn btn-primary" style="font-size:15px">Buy now</a> 
+                </div>
+              </div>
+              </div>
+          </div>
+        </div>
+      {% endfor %}
+	</div>
+  <div class="container text-right">
+    <a href='/products'>View more</a>
+  </div>
+</div>
+
+<style>
+    .cta-banner {
+        background-image:
+        /* The image fade to white */
+        linear-gradient( to left, rgba(0,0,0,0) 50%, #fff 85%),
+        /* The image used */
+        url("{% static "img/un.jpg" %}");
+        /* Set a specific height */
+       height:400px;
+        /* Create the parallax scrolling effect */
+        background-attachment: fixed;
+        background-position: center bottom;
+        background-repeat: no-repeat;
+        background-size: cover;
+        z-index: auto;
+        position: relative;
+        color: black;
+    }
+</style>
+{%endblock%}
